@@ -1,0 +1,682 @@
+Créer une application React:
+
+npx create-react-app mon-app
+cd mon-app
+npm start
+
+npm install create-react-app -g
+create-react-app NOM
+
+Organisation des fichiers:
+
+Pour un exemple, regarder le composant Loader du projet "marvel-quiz"
+
+- Créer un dossier "Components"
+- Créer un dossier par composant que l'on veut créer
+- Créer, à l'intérieur du dossier du composant, un fichier du nom du composant en ".js" pour le code (js et JSX) du composant
+- Créer, à l'intérieur du dossier du composant, un fichier du nom du composant en ".css" pour le code CSS du composant
+- Créer un fichier package.json pour préciser que le fichier en ".js" est le main du dossier.
+Ainsi, nous n'aurons pas à faire:
+
+import Loader from '../Loader/Loader'
+
+mais uniquement
+
+import Loader from '../Loader'
+
+Dans le JSX on ne peut pas utiliser de l'inline CSS
+
+<div className="cars" style="background-color: pink;">
+</div>
+
+ce que l'on peut faire, par contre, c'est du Javascript qui
+sera compilé en CSS :
+
+<div className="cars" style={{backgroundColor: 'pink', width: '400px', padding: '10px', margin: '5px auto'}}>
+</div>
+
+Lorsque l'on importe un composant avec l'aide de l'export default, on peut le renommer dans le fichier dans lequel on l'importe.
+Exemple :
+
+import Container from './components/Mycars';
+
+<Container></Container>
+
+<!-- ou -->
+
+<Container />
+
+Le Named Export oblige à garder le nom du composant
+
+Pour ce faire :
+
+- On retire la ligne : export default Mycars;
+
+- On rajoute "export" en début de ligne : export class Mycars extends React.Component
+
+- Lorsque l'on importe la class, on change la ligne :
+import Mycars from './components/Mycars';
+
+en :
+
+import { Mycars } from './components/Mycars';
+
+Soit on utilise props
+les props ne peuvent pas être modifiés
+
+function Car(props) {
+
+	if (props.children) {
+		return (
+			<Wrapper>
+				<p>Marque: { props.children }</p>
+				<p>Couleur: { props.color ? props.color : "Néant" }</p>
+			</Wrapper>
+		)	
+	} else {
+		return (
+			<Wrapper>
+				<p>Marque: Non renseignée</p>
+				<p>Couleur: { props.color ? props.color : "Néant" }</p>
+			</Wrapper>
+		)
+		
+	}
+		}
+
+Soit on utilise le destructuring
+
+const Myheader = ({ children, myStyle }) => {
+	return (
+		<h1 style={{color: myStyle}}>{ children }</h1>
+	)
+}
+
+export default Myheader
+
+On peut modifier les variable récupérée par le destructuring (Mais pas conseillé. Seulement si vraiment obligé)
+Par exemple :
+
+const Myheader = ({ children, myStyle }) => {
+
+myStyle = "blue";
+
+	return (
+		<h1 style={{color: myStyle}}>{ children }</h1>
+	)
+}
+
+
+
+Fonction qui se déclenche lors d'un évènement :
+
+noCopy = () => {
+	alert('Merci de ne pas copier le texte.');
+}
+
+<p onCopy={ this.noCopy }>lorem ipsum dolor sit amet.</p>
+
+Si on utilise la fonction comme cela : this.noCopy() => elle va se déclencher lorsque la page est chargée.
+Sinon : this.noCopy => elle va se déclencher uniquement lorsque l'évènement survient.
+
+Avec Vanilla Javascript, on fait "oncopy" :
+<p oncopy="myFunction()">Hello World</p>
+
+Avec React, on fait "onCopy" (en Camel case)
+<p onCopy={ myFunction() }>Hello World</p>
+
+State:
+
+Les state ne doivent servir qu'au render du composant. Si ils ne servent pas à ça, il vaudra mieux utiliser et définir une variable.
+
+Changer un State => 2 possibilités :
+
+changeTitle = (e) => {
+    console.log(e);
+    this.setState({
+      titre: "Mon nouveau titre"
+    })
+  }
+
+  changeViaParam = (titre) => {
+    this.setState({
+      titre
+    })
+  }
+
+<button onClick={ this.changeTitle }>Changer le nom en dur</button>
+<button onClick={ () => this.changeViaParam('Titre via un paramètre') }>Changer le nom en dur</button>
+// On met ici () => devant la fonction, car dés que l'on rajoute des parenthèses, avec ou sans paramètres à this.changeViaParam
+// React va comprendre qu'il faut lancer la fonction dés que la page est chargée
+// On rajoute donc () => devant pour lui faire comprendre, que ce n'est pas au chargement de la page qu'il faudra lancer la fonction
+
+
+
+TRES TRES TREEEES IMPORTANT !!!!
+
+En React, il est important de traiter l'information avant de les passer dans les props !!!!
+
+
+
+Les fragments sont un moyen pour React de ne pas rajouter une div qui englobe les éléments que l'on va importer. (Exemple, Car dans Mycars)
+
+Soit on les utilise comme ceci:
+
+<Fragment>
+</Fragment>
+
+ou alors comme ça:
+
+<>
+</>
+
+Le problème de la deuxième solution est que si nous devons utiliser key={index}, comme par exemple,
+lorsque l'on génères des parties de code à l'aide de la fonction map. Dans ce cas, nous allons vouloir utiliser les balises <></> en rajoutant key
+comme ceci: <key={index}></> => Cela ne fonctionne pas
+
+Dans ce cas précis, il faudra alors utiliser les balises Fragment, comme dans cet exemple: <Fragment key={index}></Fragment>
+
+Le destructuring est une nouveauté de Javascript ES6 qui facilite l'extraction de data par exemple d'un tableau ou
+d'un objet pour les placer dans des variables distinctes
+
+Le destructuring pour les variables est bien.
+
+Le formateur n'aprécie pas trop l'utilisation du destructuring pour les méthodes. Il ne trouve pas cela suffisemment explicite.
+Il trouve cela beaucoup plus compréhensible en utilisant this.state.nomDeLaMethode.
+
+Sinon, on utiliserait: const { nomDeLaMethode } = this;
+
+
+var array = ["Mark", "Léa", "Justine"];
+
+
+Plutôt que de faire :
+
+var userOne = array[0];
+var userTwo = array[1];
+var userThree = array[2];
+
+
+On va faire directement :
+
+var [userOne, userTwo, userThree] = array;
+
+
+
+var [userOne, ...rest] = array;
+
+rest => ["Léa", "Justine"]
+
+
+Destructuring d'objet
+
+var members = {
+	userOne: "Mark",
+	userTwo: "Léa",
+	userThree: "Justine"
+}
+
+Plutôt que de faire :
+
+var memberOne = member.userOne;
+
+
+On va faire directement :
+
+var {userOne, userTwo, userThree} = members;
+
+
+ou :
+
+var {userOne, userTwo, ...rest} = members;
+
+rest => {"Justine"}
+
+console.log(rest) => {userThree: "Justine"}
+
+
+ou encore :
+
+var{userOne: hulk, userTwo: spiderman, userThree: superMan} = members;
+
+
+Retourne quelque chose, uniquement si this.state.winner est vrai
+
+return this.state.winner && <h1>Bravo {this.state.name}</h1>
+
+
+Lorsque l'on utilise le code d'un fichier SVG, React, ne supporte pas les tirets.
+
+Comme dans l'exemple suivant :
+
+fill-rule="nonzero"
+stroke-width="12.257193"
+
+
+Il faut supprimer le tiret "-" et mettre une majuscule au début du prochain mot.
+
+Comme ceci :
+
+fileRule="nonzero"
+strokeWidth="12.257193"
+
+Pour ne pas perdre les données rentrées lorsque l'on valide un formulaire :
+Il faut utiliser la méthode suivante dans le handler pour éviter le comportement par défaut du formulaire
+c'est à dire, le rechargement de la page juste après la validation du formulaire:
+e.preventDefault();
+
+Mettre plusieurs classes en CSS :
+
+<p className={`${isCorrect} bigFont`}>Je suis rouge ou bleu</p>
+
+Dans cet exemple, isCorrect est une variable, c'est pour cela qu'elle est entourée par
+${}. bigFont est une classe marquée en dur, du coup pas besoin de rajouter quoi que ce soit
+
+
+En React, il existe 2 façon d'inclure du CSS :
+- Importer le fichier CSS, que ce soit dans le parent ou dans l'enfant, ça fonctionnera pareil
+- Importer et utiliser des modules. Comme dans l'exemple suivant:
+  import styles from myCss.module.css
+
+Les modules permettent d'appliquer un style uniquement à un élément.
+Par exemple : Si on applique le style dans un élément parent, l'élément enfant, ne pourra pas
+en profiter
+
+
+
+Styled components: Librairie pour gérer le css des composants
+
+www.styled-components.com
+
+
+
+Raccourcis Visual Studio Code :
+
+- Sélectionner la zone à mettre en commentaire + Shift + Alt (Option sur Mac) + a => Met en commentaire
+- Indenter automatiquement le code JSX => Changer le language utilisé dans la barre d'état => alt + Shift + F (Option sur Mac)
+- rce => permet d'écrire automatiquement tout le code d'une classe
+- rfce => permet d'écrire automatiquement tout le code d'une fonction
+- rafce => permet d'écrire automatiquement tout le code d'une fonction fléchée
+- rconst => permet d'écrire automatiquement tout le code du constructeur d'une classe
+- clg => permet d'écrire console.log()
+- cmd => permet d'écrire automatiquement la méthode componentDidMount
+- cdup => permet d'écrire automatiquement la méthode componentDidUpdate
+- cwun => permet d'écrire automatiquement la méthode componentWillUnmount
+- gdsfp => permet d'écrire automatiquement la méthode getderivedStateFromProps
+- scu => permet d'écrire automatiquement la méthode shouldComponentUpdate
+
+
+Ne jamais changer de state ou de faire appelle ajax (pour récupérer de la data ou autre) dans la méthode render() !!!!
+
+
+Lorsqu'un composant est build, react passe par le constructeur, puis par la méthode render et enfin par la méthode componentDidMount.
+CEPENDAAAAANT !!!! s'il contient un composant enfant, il va passer par son constructeur, puis parsa méthode render,
+puis par le constructeur de l'élément enfant, puis pa la méthode render de l'élément enfant pour construire tous les éléments.
+C'est uniqument à partir du moment où tous les composants sont créés que nous allons pouvoir accéder à la méthode componentDidMount !!!!
+
+
+ATTENTION !!!! La méthode componentDidMount avec précaution, car elle peut impacter les permomances
+
+ATTENTION !!!! Ne surtout pas utiliser de setState à l'intérieur de componentDidUpdate sinon => boucle infinie
+ATTENTION !!!! Ne pas appeler setState dans componentWillUnmount(), car le composant est détruit et ne sera jamais ré-affiché.
+Lorsqu'une instance d'un objet est démontée, elle ne sera plus jamais re-montée.
+
+
+On peut utiliser la méthode shouldComponentUpdate pour indiquer à l'application si elle doit se recharger ou non après le changement effectué
+
+
+Lorsque l'on crée un PureComponent => bien penser à tranformer ses composants enfants aussi en PureComponent.
+Pour garder une cohérence d'ensemble. Car, lorsqu'un élément parent n'est pas rechargé, alors ses composants enfants ne le sont pas non plus. 
+
+Il ne faut pas utiliser que des Pure Components, car sinon => problèmes dû au non chargement des composants enfants.
+Donc, il vaut mieux utiliser les composants simples, sauf dans le cas où ne voulons pas rafraichir la page => dans ce cas là, prévilégier l'utilisation de composants Pure Components.
+
+Memo:
+
+React.memo est un composant d'ordre supérieur. Il joue le même rôle que React.PureComponent, mais pour les composants créés à l'aide de fonctions plutôt que de classes.
+
+Tranformer une fonction en fonction qui possède le même comportement qu'un Pure Component:
+import { memo } from 'react'
+
+export default memo(FunctionComp)
+
+=> à présent, la fonction prend en compte l'ancienne valeur et la nouvelle valeur du ou des states modifiées
+
+Portails:
+
+Un cas typique d’utilisation des portails survient lorsqu’un composant parent possède un style overflow: hidden ou z-index et que l’enfant a besoin de « sortir de son conteneur » visuellement.
+C’est par exemple le cas des boîtes de dialogues, des pop-ups ou encore des infobulles.
+
+Si un bouton ne possède pas d'évènement onClick, alors, il va rechercher dans son élément parent, qui va rechercher lui même dans son
+élément parent, jusqu'à ce qu'il trouve un évènement onClick afin de l'exécuter.
+C'est ce que l'on appelle, le bouillonnement.
+
+Si un élément, par exemple, la div App, possède une position relative en css et qu'il possède une modale à l'intérieur, alors, la modale va s'afficher uniquement à l'intérieur du composant App...
+Or, générallement, on préfère que la pop up s'affiche devant tous les éléments et sur presque toute la taille de la page.
+Pour contrer ce comportement, on utilise les portails.
+
+
+
+Ref:
+
+Avec le fonctionnement de réactualisation autpmatique de React, il est déconseillé d'utiliser les fonctions de bases de Javascript pour accéder un élément, (comme par exemple: document.getElementById())
+Il est préférable, pour cibler et modifier un élément du DOM, d'utiliser les refs.
+
+Pour utiliser les refs:
+
+1.Ajouter l'attribut ref
+<input type="text" value={this.state.value} onChange={this.update} ref={this.myInput}/>
+
+2.Ajouter dans le constructeur
+this.myInput = createRef();
+
+2.ou hors du constructeur
+myInput = createRef();
+
+3.Utiliser la ref dans ce que l'on veut faire
+Par exemple:
+update = event => {
+		this.setState({
+			value: event.target.value
+		})
+	}
+
+dans ce cas, il y a un state qui possède la valeur:
+value: ''
+
+
+HOC:
+
+Comme dans le cas de l'application avec Goku et Vegeta, les deux composants partagent du code en commun, ce qui est redondant.
+Pour éviter de répéter du code, on va créer un HOC, c'est à dire, un composant d'ordre supérieur (Higher-Order Component ou HOC, NdT).
+Un composant d’ordre supérieur est une fonction qui accepte un composant et renvoie un nouveau composant.
+
+
+
+Si du code se répète entre deux composants, deux possibilités:
+- Faire un HOC
+- Faire un Props de Rendu (fonction passées en tant que props)
+
+
+
+Pour créer différentes pages et des liens pour y accéder => Utiliser "BrowserRouter" et "Route":
+- Importer "BrowserRouter" et "Route" => import { BrowserRouter, Route} from 'react-router-dom';
+-
+
+Exact: Utiliser exact pour afficher les composants de la page de base "/" en tant qu'attribut de la balise
+Route correspondante comme par exemple:
+
+<Route exact path="/" component={Docs}/>
+
+
+Strict: attribut à mettre dans la balise Route qui permet de dire que l'ont n'affiche la page,
+seulement lorsque l'url possède tous les charactères du string donné. Comme par exemple:
+
+<Route strict path="/community" component={Community}/>
+
+
+Pour éviter qu'une page se recharge automatiquement lorsque l'on clique sur un lien,
+il ne faut pas utiliser:
+
+<a className="nav-link" href='/'>Docs</a>
+
+Mais plutôt utiliser:
+
+"Link" et "NavLink"
+
+Link => remplace les liens a:
+
+<a className="nav-link" href='/'>Docs</a> => <Link className="nav-link" to='/'>Docs</Link>
+
+
+
+Switch => Permet d'afficher une page d'erreur:
+
+- Importer Switch => import { Switch } from 'react-router-dom';
+
+<Switch>
+    <Route exact path="/" component={Docs}/>
+    <Route path="/tutorial" component={Tutorials}/>
+    <Route strict path="/community" component={Community}/>
+    <Route strict component={ErrorPage}/>
+</Switch>
+
+
+
+Contexte:
+
+Un contexte permet de partager des données comme par exemple, le state
+entre plusieurs composants, sans passer par une chaine/enchainement de props
+que l'on passe d'un élément à l'autre, puis à l'autre, puis à l'autre, puis à l'autre,
+puis enfin au composant dans lequel on souhaite les utiliser.
+
+L'objet qui contient les données que nous voulons faire passer par le contexte,
+
+
+
+Hooks:
+
+C'est le moyen d'avoir un state à l'intérieur d'un composant de type fonction
+
+Classe:
+
+import React, { Component } from 'react'
+
+class ClassState extends Component {
+
+	constructor(props) {
+	  super(props)
+	
+	  this.state = {
+		 counter: 0
+	  }
+	}
+
+	addOne = () => {
+		this.setState(prevState => {
+			return {
+				counter: prevState.counter + 1
+			}
+		})
+	}
+
+  render() {
+	return (
+	  <div>
+		<p>Class State: {this.state.counter}</p>
+
+		<button onClick={this.addOne}>State dans Class</button>
+	  </div>
+	)
+  }
+}
+
+export default ClassState
+
+
+
+Hook:
+
+import React, { useState } from 'react'
+
+const FunctionState = () => {
+
+	const [counter, setCounter] = useState(0)
+
+	const addOne = () => {
+		setCounter(prevCounter => prevCounter + 1)
+	}
+
+  return (
+	<div>
+		<p>FunctionState: {counter}</p>
+		<button onClick={addOne}>State dans Function</button>
+	</div>
+  )
+}
+
+export default FunctionState
+
+
+
+
+Hook useEffect:
+
+- Permet de ne pas faire de répétition entre les différentes fonctions de cycle de vie
+- Se lance à chaque render (phase de montage, phase de mise à jour, phase de démontage)
+
+Si on utilise la méthode componentDidUpdate pour mettre à jour le state lors d'une incrémentation de celui-cipar exemple (incrémentation = ajout de 1 à la valeur de base),
+et qu'il y a également un champ de type input, alors dés que l'on va taper du texte ou modifier du texte à l'intérieur de l'input,
+alors, la méthode va s'exécuter. Ce qui n'est pas terrible du tout au niveau de l'optimisation du code.
+
+Il vaut mieux utiliser une condition dans un composant de type classe comme un composant de type hook
+
+Les méthodes de cycle de vie des composants sont utilisables uniquement avec des composants de type classe.
+
+
+Copier le comportement de la fonction componentDidMount dans un composant de type hook:
+
+Ne s'execute qu'une seule fois:
+
+useEffect(() => {
+		console.log('Mise à jour du titre via useEffect')
+		document.title = `Vous avez cliqué ${count} fois`
+	}, [])
+
+
+S'exécute à chaque modification du state count
+
+useEffect(() => {
+		console.log('Mise à jour du titre via useEffect')
+		document.title = `Vous avez cliqué ${count} fois`
+	}, [count])
+
+
+Le fait d'indiquer count à l'intérieur des crochets [], indique à la fonction useEffect qu'elle doit se relancer, et ainsi recréer/regénérer le composant à chaque modification de count.
+
+Pour indiquer à React qu'il ne faut lancer la fonction qu'une seule et unique fois, lors du montage du composant, il faut donner un tableau vide.
+C'est l'équivalant de componentDidMount, mais pour les hooks.
+Comme dans l'example suivant:
+
+useEffect(() => {
+
+	}, [])
+
+
+Hooks: La fonction useReducer
+
+C'est une alternative à la fonction useState.
+
+
+
+useReducer:
+
+Alternative à la méthode useState, elle permet d'avoir un state dans un composant de type fonction.
+
+
+Méthode Reduce en Javascript:
+
+const myArray = [1, 2, 3, 4]
+
+const reducer = (accum, curval) => accum + curval
+// accum => accumulateur
+
+myArray.reduce(reducer, 5)
+// 5 => valeur initiale facultative
+// 5 + 10 = 15
+
+
+Méthode useReducer:
+
+const [state, dispatch] = useReducer(reducer, initialArg, init);
+
+Example
+
+import React, { useReducer } from 'react'
+
+const initialState = 0;
+
+const reducer = (state, action) => {
+	switch(action) {
+		case 'increment':
+			return state + 1
+		case 'decrement':
+			return state -1
+		case 'reinitialiser':
+			return initialState
+
+		default:
+			return state
+	}
+}
+
+function Count() {
+
+	const [count, dispatch] = useReducer(reducer, initialState)
+
+  return (
+	<div>
+		<h1>{count}</h1>
+		<button className='btn btn-success m-3' onClick={() => dispatch('increment')}>+</button>
+		<button className='btn btn-danger m-3' onClick={() => dispatch('decrement')}>-</button>
+		<button className='btn btn-primary m-3' onClick={() => dispatch('reinitialiser')}>Réinitialiser</button>
+	</div>
+  )
+}
+
+export default Count;
+
+
+
+React.PureComponent est similaire à React.Component. La seule différence est que React.Component n'implémente pas
+la méthode shouldComponentUpdate(), alors que React.PureComponent l'implémente en réalisant une comparaison de surface
+de l'état et des propriétés.
+
+Si la fonction render() d'un de vos composants React produit un rendu identique pour le même état et les mêmes propriétés,
+le faire étendre React.PureComponent devrait améliorer les perfomances dans certains cas.
+
+
+Si on veut modifier un objet d'un state dans une fonction (donc, sur lequel on a utilisé la méthode useState pour le créé),
+=> il faut utiliser la méthode set + le spread operator.
+
+Par exemple:
+
+const [countOne, setCountOne] = useState({value: 0, btnColor: 'success', increment: 25});
+
+const incrementCountOne = () => {
+	countOne.value < 100 && setCountOne({...countOne, value: countOne.value + 5});
+}
+
+
+useCallback:
+
+Permet de ne pas avoir à recréer/recharger une méthode dés qu'il y a la modification d'un state.
+En effet, il vaut mieux ne pas recharger les méthodes et les states s'il n'y en a pas besoin.
+Renvoie une fonction de rappel mémorisée
+
+useMemo:
+
+Renvoie une valeur mémorisée
+
+
+useCallback => Renvoie une fonction de rappel mémorisée
+useMemo => Renvoie une valeur mémorisée
+
+
+useRef:
+
+useRef is a React Hook that lets you reference a value that’s not needed for rendering.
+
+
+
+userSession !== null => peut s'écrire "!!userSession"
+
+
+Notifications React :
+
+https://fkhadra.github.io/react-toastify/introduction/
+
+
+Form stepper (indicateur d'étapes formulaire):
+
+npm install react-stepper-horizontal --save

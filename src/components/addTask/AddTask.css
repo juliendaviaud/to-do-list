@@ -1,0 +1,90 @@
+.addTaskButton {
+  display: flex;
+  justify-content: center;
+  color: #4c4250;
+  cursor: pointer;
+}
+
+.addTaskButton img {
+  width: 20px;
+  margin-right: 6px;
+}
+
+.addTaskText {
+  margin: 0;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+/*----Pop up----*/
+
+.popup {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.popupFormContainer {
+  height: 30%;
+  width: 70%;
+  padding: 30px;
+  max-height: 170px;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  border-radius: 20px;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.newTaskNameContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.newTaskNameContainer input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1.5px solid rgb(200, 200, 200);
+  text-align: center;
+}
+
+.popupButtons {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.popupButtons button {
+  width: 80px;
+  height: 30px;
+  background-color: #fff;
+  border-radius: 5px;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.addButton {
+  color: #64d9ba;
+  border: 1.5px solid #64d9ba;
+}
+
+.cancelButton {
+  color: rgb(163, 163, 163);
+  border: 1.5px solid rgb(163, 163, 163);
+}

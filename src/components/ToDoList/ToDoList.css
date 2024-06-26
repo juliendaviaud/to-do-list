@@ -1,0 +1,47 @@
+.TaskList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.dividerLine {
+  width: 80%;
+  margin: 0;
+  margin-top: 5px;
+  border: 0.25px solid #e1e1e1;
+}
+
+.incompleteTaskListContainer,
+.completedTaskListContainer {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.incompleteTaskListContainer,
+.completedTaskListContainer {
+  flex-grow: 1;
+}
+
+.incompleteTaskList,
+.completedTaskList {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.TaskList h2 {
+  margin: 0;
+  font-family: "Kalam", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/*---- Responsive ----*/
+
+@media screen and (max-width: 576px) {
+  .TaskList h2 {
+    font-size: 1.25rem;
+  }
+}
