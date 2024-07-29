@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./ToDoListContainer.css";
-import plusIcon from "../../images/plus-icon.svg";
 import AddTask from "../addTask/AddTask";
 import ToDoList from "../ToDoList/ToDoList";
 

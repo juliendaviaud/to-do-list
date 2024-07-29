@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 import "./MainPage.css";
-import ToDoListContainer from '../ToDoListContainer/ToDoListContainer';
+import ToDoListContainer from "../ToDoListContainer/ToDoListContainer";
 
 const MainPage = () => {
   return (
-	<div className='mainPage'>
-		<ToDoListContainer/>
-	</div>
-  )
-}
+    <div className="mainPage">
+      <ToDoListContainer />
+    </div>
+  );
+};
 
-export default MainPage
+export default MainPage;
